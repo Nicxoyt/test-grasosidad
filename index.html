@@ -1,120 +1,39 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eco en la Red</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #15202B;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            transition: background-color 1s, filter 1s;
-        }
-        .container {
-            max-width: 500px;
-            margin: auto;
-        }
-        .tweet {
-            background-color: #192734;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px 0;
-            text-align: left;
-            position: relative;
-        }
-        .username {
-            font-weight: bold;
-            color: #1DA1F2;
-        }
-        .response {
-            margin-top: 10px;
-            font-style: italic;
-        }
-        .buttons {
-            margin-top: 10px;
-        }
-        .buttons button {
-            margin: 5px;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #444;
-            color: white;
-        }
-        .screamer {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            text-align: center;
-            padding-top: 20%;
-            font-size: 50px;
-            color: red;
-            font-weight: bold;
-        }
-        #menu {
-            display: block;
-        }
-        #game {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <div id="menu">
-        <h1>Eco en la Red</h1>
-        <button onclick="startGame()">Iniciar Juego</button>
-    </div>
-    <div id="game" class="container">
-        <div id="tweets"></div>
-    </div>
-    <div class="screamer" id="screamer">¡NO DEBISTE SEGUIR LEYENDO!</div>
-    
-    <script>
-        let index = 0;
-        let goodChoices = 0;
-        let badChoices = 0;
-        let tweets = [
-            {text: "Hoy tuve un buen día en el trabajo.", options: ["¡Qué bien!", "No me importa"]},
-            {text: "Salí a caminar y el clima estaba perfecto.", options: ["Me alegra escuchar eso", "Qué aburrido"]},
-            {text: "Anoche escuché ruidos extraños en mi casa, pero estaba solo.", options: ["Tal vez fue el viento", "Eso no es normal"]},
-            {text: "Hace unos años, vivía en una casa antigua. Un día, encontré un diario escondido en la pared. Sus páginas hablaban de alguien que vivió allí hace mucho y desapareció sin dejar rastro. Al llegar a la última página, mi nombre estaba escrito con una fecha futura. Esa fecha llegó ayer...", options: ["Eso es perturbador", "Solo una coincidencia"]},
-            {text: "Una vez, trabajé en un hotel. Una noche, una huésped pidió que fuéramos a su habitación a arreglar la televisión. Cuando llegamos, la habitación estaba vacía... y llevaba años sin ocuparse.", options: ["Debes haber leído mal el registro", "Eso es imposible"]},
-            {text: "Recibí un mensaje de un número desconocido. Decía: 'No abras la puerta, pase lo que pase'. Minutos después, alguien tocó insistentemente...", options: ["Ignóralo", "Mira por la mirilla"]},
-            {text: "Caminando de noche, escuché pasos detrás de mí. Me giré, pero no había nadie. Cuando volví a mirar al frente, una sombra se desvaneció en la esquina.", options: ["Seguro fue tu imaginación", "Corre"]},
-            {text: "En mi infancia, tenía un amigo imaginario. Lo olvidé con los años, hasta que una noche escuché su voz llamándome desde el armario.", options: ["No entres", "Solo una pesadilla"]},
-            {text: "Fui a visitar la tumba de un familiar y encontré una nota con mi nombre y una fecha futura.", options: ["Seguro es una broma", "Llama a alguien"]}
-        ];
-        function startGame() {
-            document.getElementById("menu").style.display = "none";
-            document.getElementById("game").style.display = "block";
-            addTweet();
-        }
-        function addTweet() {
-            if (index >= tweets.length) { checkEnding(); return; }
-            let tweet = tweets[index];
-            document.getElementById("tweets").innerHTML = `<div class='tweet'><span class='username'>@Usuario${index + 1}</span>: ${tweet.text}<div class='buttons'><button onclick="chooseOption(this, 'good')">${tweet.options[0]}</button><button onclick="chooseOption(this, 'bad')">${tweet.options[1]}</button></div></div>`;
-        }
-        function chooseOption(button, choice) {
-            if (choice === 'good') goodChoices++;
-            else badChoices++;
-            document.querySelector(".buttons").innerHTML = `<p class='response'>${button.innerText}</p>`;
-            setTimeout(() => { index++; addTweet(); }, 2000);
-        }
-        function checkEnding() {
-            if (badChoices > goodChoices) {
-                document.getElementById("screamer").style.display = "block";
-            } else {
-                alert("Has terminado el juego.");
-            }
-        }
-    </script>
-</body>
-</html>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+
+// Configuración de Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyBYF_Zg6QbRueDviqs597xpG7IwZ6bMVU4",
+    authDomain: "twittee-7ce7e.firebaseapp.com",
+    projectId: "twittee-7ce7e",
+    storageBucket: "twittee-7ce7e.appspot.com",
+    messagingSenderId: "546847253540",
+    appId: "1:546847253540:web:a8c99cbed4f7efe714e4b1",
+    measurementId: "G-BHKCSD3W7X"
+};
+
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Función para publicar tweet
+async function postTweet() {
+    const username = document.getElementById('username').value;
+    const text = document.getElementById('tweet').value;
+    if (username && text) {
+        await addDoc(collection(db, "tweets"), {
+            username,
+            text,
+            time: Date.now()
+        });
+        document.getElementById('tweet').value = "";
+    }
+}
+
+// Mostrar tweets en tiempo real
+const q = query(collection(db, "tweets"), orderBy("time", "desc"));
+onSnapshot(q, (snapshot) => {
+    document.getElementById('tweets').innerHTML = snapshot.docs.map(doc =>
+        `<div class="tweet"><strong>${doc.data().username}</strong>: ${doc.data().text}</div>`
+    ).join('');
+});
