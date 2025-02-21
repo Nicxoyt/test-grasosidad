@@ -84,10 +84,13 @@
             
             tweetContainer.prepend(tweetElement);
             index++;
+
+            // Genera un tiempo aleatorio entre 5 y 15 segundos
+            const randomTime = Math.floor(Math.random() * (15000 - 5000 + 1)) + 5000;
+            setTimeout(addTweet, randomTime);
         }
 
-        addTweet();
-        setInterval(addTweet, 15000); // Cada 15 segundos (15000 ms)
+        addTweet(); // Inicia el proceso
     </script>
 </body>
 </html>
