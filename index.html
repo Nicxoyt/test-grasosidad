@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meme Hub</title>
+    <title>Confesiones CLA</title>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBYF_Zg6QbRueDviqs597xpG7IwZ6bMVU4",
@@ -20,91 +19,76 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const storage = getStorage(app);
 
-        let username = localStorage.getItem("username");
-        if (!username) {
-            username = prompt("Escribe tu nombre de usuario:");
-            localStorage.setItem("username", username);
+        let userId = localStorage.getItem("userId");
+        if (!userId) {
+            userId = "Anónimo " + Math.floor(Math.random() * 10000);
+            localStorage.setItem("userId", userId);
         }
 
-        async function uploadMeme() {
-            const file = document.getElementById('fileInput').files[0];
-            const caption = document.getElementById('caption').value;
-            if (!file || !caption) return alert("Selecciona una imagen y escribe una descripción");
+        async function sendMessage() {
+            const message = document.getElementById('messageInput').value;
+            if (!message) return alert("Escribe un mensaje antes de enviar");
 
-            const storageRef = ref(storage, 'memes/' + Date.now() + '-' + file.name);
-            await uploadBytes(storageRef, file);
-            const url = await getDownloadURL(storageRef);
-
-            await addDoc(collection(db, "memes"), { imageUrl: url, caption: caption, username: username, timestamp: Date.now() });
-            loadMemes();
+            await addDoc(collection(db, "messages"), { message: message, user: userId, timestamp: Date.now() });
+            document.getElementById('messageInput').value = "";
+            loadMessages();
         }
 
-        async function loadMemes() {
-            document.getElementById("memes").innerHTML = "";
-            const querySnapshot = await getDocs(collection(db, "memes"));
-            const memes = [];
-            querySnapshot.forEach(doc => memes.push(doc.data()));
-            memes.sort((a, b) => b.timestamp - a.timestamp);
+        async function loadMessages() {
+            document.getElementById("messages").innerHTML = "";
+            const querySnapshot = await getDocs(collection(db, "messages"));
+            const messages = [];
+            querySnapshot.forEach(doc => messages.push(doc.data()));
+            messages.sort((a, b) => b.timestamp - a.timestamp);
             
-            memes.forEach(memeData => {
-                const memeContainer = document.createElement("div");
-                memeContainer.classList.add("meme");
-                
-                const img = document.createElement("img");
-                img.src = memeData.imageUrl;
-                img.style.width = "300px";
-                img.style.margin = "10px";
-                
-                const caption = document.createElement("p");
-                caption.textContent = memeData.caption;
+            messages.forEach(msgData => {
+                const msgContainer = document.createElement("div");
+                msgContainer.classList.add("message");
                 
                 const user = document.createElement("p");
-                user.textContent = "Subido por: " + memeData.username;
+                user.textContent = msgData.user + ":";
                 user.style.fontWeight = "bold";
                 
-                memeContainer.appendChild(img);
-                memeContainer.appendChild(caption);
-                memeContainer.appendChild(user);
-                document.getElementById("memes").appendChild(memeContainer);
+                const text = document.createElement("p");
+                text.textContent = msgData.message;
+                
+                msgContainer.appendChild(user);
+                msgContainer.appendChild(text);
+                document.getElementById("messages").appendChild(msgContainer);
             });
         }
 
-        window.uploadMeme = uploadMeme;
-        window.onload = loadMemes;
+        window.sendMessage = sendMessage;
+        window.onload = loadMessages;
     </script>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #1E3A8A;
+            background-color: #8B0000;
             color: white;
         }
         h1 {
-            color: #FACC15;
+            color: #FFFFFF;
         }
         .container {
             max-width: 500px;
             margin: auto;
             padding: 20px;
-            background: #3B82F6;
+            background: #B22222;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
         }
-        .meme {
-            margin-top: 20px;
+        .message {
+            margin-top: 10px;
             padding: 10px;
-            background: #2563EB;
+            background: #FF6347;
             border-radius: 10px;
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
         }
-        img {
-            max-width: 100%;
-            border-radius: 10px;
-        }
         button {
-            background-color: #FACC15;
+            background-color: #FFFFFF;
             color: black;
             padding: 10px 20px;
             border: none;
@@ -112,17 +96,16 @@
             cursor: pointer;
         }
         button:hover {
-            background-color: #D97706;
+            background-color: #DDDDDD;
         }
     </style>
 </head>
 <body>
-    <h1>Meme Hub</h1>
+    <h1>Confesiones CLA</h1>
     <div class="container">
-        <input type="file" id="fileInput"><br><br>
-        <input type="text" id="caption" placeholder="Escribe una descripción..."><br><br>
-        <button onclick="uploadMeme()">Subir Meme</button>
+        <input type="text" id="messageInput" placeholder="Escribe tu confesión..."><br><br>
+        <button onclick="sendMessage()">Enviar</button>
     </div>
-    <div id="memes"></div>
+    <div id="messages"></div>
 </body>
 </html>
