@@ -30,11 +30,15 @@
     </style>
 </head>
 <body>
-    <h1>Twitter Falso</h1>
     <div class="tweet-container" id="tweets"></div>
 
     <script>
-        const usernames = ["@LunaMist", "@DarkEcho", "@ShadowSeeker", "@LostSoul", "@TheWatcher", "@VoidWhisper"];
+        const usernames = [
+            "@LunaMist", "@DarkEcho", "@ShadowSeeker", "@LostSoul", 
+            "@TheWatcher", "@VoidWhisper", "@EchoVoid", "@SilentScreams",
+            "@NightWanderer", "@HauntedMind", "@WhisperingWinds"
+        ];
+
         const tweets = [
             "¡Buenos días! Espero que todos tengan un gran día 😊",
             "Nada como un café por la mañana. ☕ #Energía",
@@ -45,7 +49,27 @@
             "Escuché pasos en mi casa, pero estoy solo.",
             "Hay alguien parado afuera de mi ventana, pero estoy en un quinto piso.",
             "Mi reflejo se movió un segundo después de que yo lo hice.",
-            "No recuerdo haber escrito este tweet, pero aquí está…"
+            "No recuerdo haber escrito este tweet, pero aquí está…",
+            "Hay una foto en mi galería que no tomé.",
+            "Alguien me llama por mi nombre en sueños, pero nunca lo veo.",
+            "Desperté con arañazos en la espalda. Vivo solo.",
+            "Creo que alguien más usa mi cuenta cuando duermo.",
+            "Bloqueé a alguien en la vida real, pero sigue apareciendo.",
+            "La puerta de mi casa estaba abierta esta mañana. La cerré con llave.",
+            "Encontré un cuaderno con mi letra, pero no recuerdo haberlo escrito.",
+            "A veces siento que hay alguien detrás de mí, pero nunca hay nadie.",
+            "El reflejo en mi espejo me sonrió antes de que yo lo hiciera.",
+            "Mis auriculares reprodujeron una voz susurrante, pero no tengo música puesta.",
+            "Vi una sombra en mi pasillo y desapareció cuando parpadeé.",
+            "Me desperté a las 3:33 am con la sensación de que alguien me miraba.",
+            "Cada vez que reviso mi teléfono, hay una nota nueva que no escribí.",
+            "Mi perro gruñe a la esquina vacía del cuarto cada noche.",
+            "El maniquí en la tienda de enfrente giró la cabeza cuando lo miré.",
+            "Cerré los ojos por un segundo y la habitación parecía diferente cuando los abrí.",
+            "Alguien susurró mi nombre en el pasillo, pero no hay nadie más en casa.",
+            "Encontré fotos en mi teléfono de lugares en los que nunca he estado.",
+            "Desperté con tierra en los zapatos, pero no salí anoche.",
+            "Me encontré un post-it en mi escritorio que dice: 'No mires atrás'."
         ];
 
         let index = 0;
@@ -63,7 +87,7 @@
         }
 
         addTweet();
-        setInterval(addTweet, 60000); // Cada 1 minuto (60000 ms)
+        setInterval(addTweet, 15000); // Cada 15 segundos (15000 ms)
     </script>
 </body>
 </html>
