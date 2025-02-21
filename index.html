@@ -37,7 +37,7 @@
         function loadMessages() {
             const messagesContainer = document.getElementById("messages");
             
-            const q = query(collection(db, "messages"), orderBy("timestamp", "desc"));
+            const q = query(collection(db, "messages"), orderBy("timestamp", "asc"));
             onSnapshot(q, (snapshot) => {
                 messagesContainer.innerHTML = "";
                 snapshot.forEach(doc => {
