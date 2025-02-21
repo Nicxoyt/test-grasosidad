@@ -22,6 +22,12 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
+        let username = localStorage.getItem("username");
+        if (!username) {
+            username = prompt("Escribe tu nombre de usuario:");
+            localStorage.setItem("username", username);
+        }
+
         async function uploadMeme() {
             const file = document.getElementById('fileInput').files[0];
             const caption = document.getElementById('caption').value;
@@ -31,7 +37,7 @@
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
 
-            await addDoc(collection(db, "memes"), { imageUrl: url, caption: caption });
+            await addDoc(collection(db, "memes"), { imageUrl: url, caption: caption, username: username });
             loadMemes();
         }
 
@@ -51,8 +57,13 @@
                 const caption = document.createElement("p");
                 caption.textContent = memeData.caption;
                 
+                const user = document.createElement("p");
+                user.textContent = "Subido por: " + memeData.username;
+                user.style.fontWeight = "bold";
+                
                 memeContainer.appendChild(img);
                 memeContainer.appendChild(caption);
+                memeContainer.appendChild(user);
                 document.getElementById("memes").appendChild(memeContainer);
             });
         }
