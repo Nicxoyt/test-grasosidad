@@ -9,7 +9,7 @@
         import { getFirestore, collection, addDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyBYF_Zg6QbRueDviqs597xpG7IwZ6bMVU4",
+            apiKey: "BA-0wx-yN-WjSd4EEgZcgT7jnPnrmQq3OdkxXr99Q7SlBihsh7h2Dz4BJvJpqhExVD-agb2fUaiap_pdi3OKLkY",
             authDomain: "twittee-7ce7e.firebaseapp.com",
             projectId: "twittee-7ce7e",
             storageBucket: "twittee-7ce7e.appspot.com",
@@ -60,7 +60,7 @@
         }
 
         window.sendMessage = sendMessage;
-        window.addEventListener("load", loadMessages);
+        window.onload = loadMessages;
     </script>
     <style>
         body {
