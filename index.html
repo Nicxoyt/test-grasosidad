@@ -3,118 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test de Grasosidad</title>
+    <title>Twitter Falso</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: url('https://www.santoremediopanama.com/wp-content/uploads/2020/07/Que-significa-estar-panzon.jpg') no-repeat center center fixed;
-            background-size: cover;
+            background-color: #15202B;
             color: white;
             text-align: center;
             padding: 20px;
         }
-        .container {
+        .tweet-container {
             max-width: 500px;
             margin: auto;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
         }
-        button {
-            background-color: white;
-            color: blue;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
+        .tweet {
+            background-color: #192734;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: left;
+        }
+        .username {
+            font-weight: bold;
+            color: #1DA1F2;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Test de Grasosidad</h1>
-        <form id="testForm">
-            <p>1. ¿Sueles repetir plato cuando comes?</p>
-            <label><input type="radio" name="q1" value="si"> Sí</label>
-            <label><input type="radio" name="q1" value="no"> No</label>
-            
-            <p>2. ¿Tu panza se mueve cuando corres?</p>
-            <label><input type="radio" name="q2" value="si"> Sí</label>
-            <label><input type="radio" name="q2" value="no"> No</label>
-            
-            <p>3. ¿Te gusta comer cosas fritas?</p>
-            <label><input type="radio" name="q3" value="si"> Sí</label>
-            <label><input type="radio" name="q3" value="no"> No</label>
-            
-            <p>4. ¿Alguna vez has comido hasta no poder moverte?</p>
-            <label><input type="radio" name="q4" value="si"> Sí</label>
-            <label><input type="radio" name="q4" value="no"> No</label>
-            
-            <p>5. ¿Sientes que comes más que los demás?</p>
-            <label><input type="radio" name="q5" value="si"> Sí</label>
-            <label><input type="radio" name="q5" value="no"> No</label>
-            
-            <p>6. ¿Prefieres las hamburguesas con doble queso?</p>
-            <label><input type="radio" name="q6" value="si"> Sí</label>
-            <label><input type="radio" name="q6" value="no"> No</label>
-            
-            <p>7. ¿Comes postre después de cada comida?</p>
-            <label><input type="radio" name="q7" value="si"> Sí</label>
-            <label><input type="radio" name="q7" value="no"> No</label>
-            
-            <p>8. ¿Tomas gaseosa en lugar de agua?</p>
-            <label><input type="radio" name="q8" value="si"> Sí</label>
-            <label><input type="radio" name="q8" value="no"> No</label>
-            
-            <p>9. ¿Pides extra queso en la pizza?</p>
-            <label><input type="radio" name="q9" value="si"> Sí</label>
-            <label><input type="radio" name="q9" value="no"> No</label>
-            
-            <p>10. ¿Tienes reservas de snacks en tu cuarto?</p>
-            <label><input type="radio" name="q10" value="si"> Sí</label>
-            <label><input type="radio" name="q10" value="no"> No</label>
-            
-            <button type="button" onclick="calcularGrasosidad()">Ver resultado</button>
-        </form>
-        <h2 id="resultado"></h2>
-    </div>
+    <h1>Twitter Falso</h1>
+    <div class="tweet-container" id="tweets"></div>
 
     <script>
-        function calcularGrasosidad() {
-            let respuestasSi = 0;
-            let respuestasNo = 0;
-            let totalRespondidas = 0;
+        const usernames = ["@LunaMist", "@DarkEcho", "@ShadowSeeker", "@LostSoul", "@TheWatcher", "@VoidWhisper"];
+        const tweets = [
+            "¡Buenos días! Espero que todos tengan un gran día 😊",
+            "Nada como un café por la mañana. ☕ #Energía",
+            "¿Alguien más está esperando el fin de semana con ansias? 😂",
+            "Extraño a alguien, pero no sé a quién…",
+            "Soñé con alguien llamándome desde el otro lado del espejo.",
+            "Mi gato se queda mirando la esquina de mi cuarto y no hay nada ahí.",
+            "Escuché pasos en mi casa, pero estoy solo.",
+            "Hay alguien parado afuera de mi ventana, pero estoy en un quinto piso.",
+            "Mi reflejo se movió un segundo después de que yo lo hice.",
+            "No recuerdo haber escrito este tweet, pero aquí está…"
+        ];
+
+        let index = 0;
+
+        function addTweet() {
+            if (index >= tweets.length) return;
+
+            const tweetContainer = document.getElementById("tweets");
+            const tweetElement = document.createElement("div");
+            tweetElement.classList.add("tweet");
+            tweetElement.innerHTML = `<span class="username">${usernames[Math.floor(Math.random() * usernames.length)]}</span>: ${tweets[index]}`;
             
-            for (let i = 1; i <= 10; i++) {
-                let respuesta = document.querySelector(`input[name='q${i}']:checked`);
-                if (respuesta) {
-                    totalRespondidas++;
-                    if (respuesta.value === "si") {
-                        respuestasSi++;
-                    } else {
-                        respuestasNo++;
-                    }
-                }
-            }
-            
-            if (totalRespondidas === 0) {
-                window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-                return;
-            }
-            
-            let resultadoTexto = "";
-            if (respuestasSi > respuestasNo) {
-                resultadoTexto = "Eres grasoso 🍔";
-            } else {
-                resultadoTexto = "Eres normal 🏃";
-            }
-            
-            document.getElementById("resultado").innerText = resultadoTexto;
+            tweetContainer.prepend(tweetElement);
+            index++;
         }
+
+        addTweet();
+        setInterval(addTweet, 60000); // Cada 1 minuto (60000 ms)
     </script>
 </body>
 </html>
-
-
