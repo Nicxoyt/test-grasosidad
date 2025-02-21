@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twitter Falso</title>
+    <title>Eco en la Red</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,8 +11,9 @@
             color: white;
             text-align: center;
             padding: 20px;
+            transition: background-color 1s, filter 1s;
         }
-        .tweet-container {
+        .container {
             max-width: 500px;
             margin: auto;
         }
@@ -22,75 +23,98 @@
             padding: 15px;
             margin: 10px 0;
             text-align: left;
+            position: relative;
         }
         .username {
             font-weight: bold;
             color: #1DA1F2;
         }
+        .response {
+            margin-top: 10px;
+            font-style: italic;
+        }
+        .buttons {
+            margin-top: 10px;
+        }
+        .buttons button {
+            margin: 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #444;
+            color: white;
+        }
+        .screamer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            text-align: center;
+            padding-top: 20%;
+            font-size: 50px;
+            color: red;
+            font-weight: bold;
+        }
+        #menu {
+            display: block;
+        }
+        #game {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="tweet-container" id="tweets"></div>
-
+    <div id="menu">
+        <h1>Eco en la Red</h1>
+        <button onclick="startGame()">Iniciar Juego</button>
+    </div>
+    <div id="game" class="container">
+        <div id="tweets"></div>
+    </div>
+    <div class="screamer" id="screamer">¡NO DEBISTE SEGUIR LEYENDO!</div>
+    
     <script>
-        const usernames = [
-            "@LunaMist", "@DarkEcho", "@ShadowSeeker", "@LostSoul", 
-            "@TheWatcher", "@VoidWhisper", "@EchoVoid", "@SilentScreams",
-            "@NightWanderer", "@HauntedMind", "@WhisperingWinds"
-        ];
-
-        const tweets = [
-            "¡Buenos días! Espero que todos tengan un gran día 😊",
-            "Nada como un café por la mañana. ☕ #Energía",
-            "¿Alguien más está esperando el fin de semana con ansias? 😂",
-            "Extraño a alguien, pero no sé a quién…",
-            "Soñé con alguien llamándome desde el otro lado del espejo.",
-            "Mi gato se queda mirando la esquina de mi cuarto y no hay nada ahí.",
-            "Escuché pasos en mi casa, pero estoy solo.",
-            "Hay alguien parado afuera de mi ventana, pero estoy en un quinto piso.",
-            "Mi reflejo se movió un segundo después de que yo lo hice.",
-            "No recuerdo haber escrito este tweet, pero aquí está…",
-            "Hay una foto en mi galería que no tomé.",
-            "Alguien me llama por mi nombre en sueños, pero nunca lo veo.",
-            "Desperté con arañazos en la espalda. Vivo solo.",
-            "Creo que alguien más usa mi cuenta cuando duermo.",
-            "Bloqueé a alguien en la vida real, pero sigue apareciendo.",
-            "La puerta de mi casa estaba abierta esta mañana. La cerré con llave.",
-            "Encontré un cuaderno con mi letra, pero no recuerdo haberlo escrito.",
-            "A veces siento que hay alguien detrás de mí, pero nunca hay nadie.",
-            "El reflejo en mi espejo me sonrió antes de que yo lo hiciera.",
-            "Mis auriculares reprodujeron una voz susurrante, pero no tengo música puesta.",
-            "Vi una sombra en mi pasillo y desapareció cuando parpadeé.",
-            "Me desperté a las 3:33 am con la sensación de que alguien me miraba.",
-            "Cada vez que reviso mi teléfono, hay una nota nueva que no escribí.",
-            "Mi perro gruñe a la esquina vacía del cuarto cada noche.",
-            "El maniquí en la tienda de enfrente giró la cabeza cuando lo miré.",
-            "Cerré los ojos por un segundo y la habitación parecía diferente cuando los abrí.",
-            "Alguien susurró mi nombre en el pasillo, pero no hay nadie más en casa.",
-            "Encontré fotos en mi teléfono de lugares en los que nunca he estado.",
-            "Desperté con tierra en los zapatos, pero no salí anoche.",
-            "Me encontré un post-it en mi escritorio que dice: 'No mires atrás'."
-        ];
-
         let index = 0;
-
-        function addTweet() {
-            if (index >= tweets.length) return;
-
-            const tweetContainer = document.getElementById("tweets");
-            const tweetElement = document.createElement("div");
-            tweetElement.classList.add("tweet");
-            tweetElement.innerHTML = `<span class="username">${usernames[Math.floor(Math.random() * usernames.length)]}</span>: ${tweets[index]}`;
-            
-            tweetContainer.prepend(tweetElement);
-            index++;
-
-            // Genera un tiempo aleatorio entre 5 y 15 segundos
-            const randomTime = Math.floor(Math.random() * (15000 - 5000 + 1)) + 5000;
-            setTimeout(addTweet, randomTime);
+        let goodChoices = 0;
+        let badChoices = 0;
+        let tweets = [
+            {text: "Hoy tuve un buen día en el trabajo.", options: ["¡Qué bien!", "No me importa"]},
+            {text: "Salí a caminar y el clima estaba perfecto.", options: ["Me alegra escuchar eso", "Qué aburrido"]},
+            {text: "Anoche escuché ruidos extraños en mi casa, pero estaba solo.", options: ["Tal vez fue el viento", "Eso no es normal"]},
+            {text: "Hace unos años, vivía en una casa antigua. Un día, encontré un diario escondido en la pared. Sus páginas hablaban de alguien que vivió allí hace mucho y desapareció sin dejar rastro. Al llegar a la última página, mi nombre estaba escrito con una fecha futura. Esa fecha llegó ayer...", options: ["Eso es perturbador", "Solo una coincidencia"]},
+            {text: "Una vez, trabajé en un hotel. Una noche, una huésped pidió que fuéramos a su habitación a arreglar la televisión. Cuando llegamos, la habitación estaba vacía... y llevaba años sin ocuparse.", options: ["Debes haber leído mal el registro", "Eso es imposible"]},
+            {text: "Recibí un mensaje de un número desconocido. Decía: 'No abras la puerta, pase lo que pase'. Minutos después, alguien tocó insistentemente...", options: ["Ignóralo", "Mira por la mirilla"]},
+            {text: "Caminando de noche, escuché pasos detrás de mí. Me giré, pero no había nadie. Cuando volví a mirar al frente, una sombra se desvaneció en la esquina.", options: ["Seguro fue tu imaginación", "Corre"]},
+            {text: "En mi infancia, tenía un amigo imaginario. Lo olvidé con los años, hasta que una noche escuché su voz llamándome desde el armario.", options: ["No entres", "Solo una pesadilla"]},
+            {text: "Fui a visitar la tumba de un familiar y encontré una nota con mi nombre y una fecha futura.", options: ["Seguro es una broma", "Llama a alguien"]}
+        ];
+        function startGame() {
+            document.getElementById("menu").style.display = "none";
+            document.getElementById("game").style.display = "block";
+            addTweet();
         }
-
-        addTweet(); // Inicia el proceso
+        function addTweet() {
+            if (index >= tweets.length) { checkEnding(); return; }
+            let tweet = tweets[index];
+            document.getElementById("tweets").innerHTML = `<div class='tweet'><span class='username'>@Usuario${index + 1}</span>: ${tweet.text}<div class='buttons'><button onclick="chooseOption(this, 'good')">${tweet.options[0]}</button><button onclick="chooseOption(this, 'bad')">${tweet.options[1]}</button></div></div>`;
+        }
+        function chooseOption(button, choice) {
+            if (choice === 'good') goodChoices++;
+            else badChoices++;
+            document.querySelector(".buttons").innerHTML = `<p class='response'>${button.innerText}</p>`;
+            setTimeout(() => { index++; addTweet(); }, 2000);
+        }
+        function checkEnding() {
+            if (badChoices > goodChoices) {
+                document.getElementById("screamer").style.display = "block";
+            } else {
+                alert("Has terminado el juego.");
+            }
+        }
     </script>
 </body>
 </html>
