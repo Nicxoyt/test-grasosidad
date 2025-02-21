@@ -31,21 +31,24 @@
         async function uploadMeme() {
             const file = document.getElementById('fileInput').files[0];
             const caption = document.getElementById('caption').value;
-            if (!file) return alert("Selecciona una imagen primero");
+            if (!file || !caption) return alert("Selecciona una imagen y escribe una descripción");
 
-            const storageRef = ref(storage, 'memes/' + file.name);
+            const storageRef = ref(storage, 'memes/' + Date.now() + '-' + file.name);
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
 
-            await addDoc(collection(db, "memes"), { imageUrl: url, caption: caption, username: username });
+            await addDoc(collection(db, "memes"), { imageUrl: url, caption: caption, username: username, timestamp: Date.now() });
             loadMemes();
         }
 
         async function loadMemes() {
             document.getElementById("memes").innerHTML = "";
             const querySnapshot = await getDocs(collection(db, "memes"));
-            querySnapshot.forEach(doc => {
-                const memeData = doc.data();
+            const memes = [];
+            querySnapshot.forEach(doc => memes.push(doc.data()));
+            memes.sort((a, b) => b.timestamp - a.timestamp);
+            
+            memes.forEach(memeData => {
                 const memeContainer = document.createElement("div");
                 memeContainer.classList.add("meme");
                 
@@ -64,7 +67,7 @@
                 memeContainer.appendChild(img);
                 memeContainer.appendChild(caption);
                 memeContainer.appendChild(user);
-                document.getElementById("memes").prepend(memeContainer);
+                document.getElementById("memes").appendChild(memeContainer);
             });
         }
 
