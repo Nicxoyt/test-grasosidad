@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Among Us - Versión Simple</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .game-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+            position: relative;
+        }
+        .player {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .bot {
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            border-radius: 50%;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container" id="game-container">
+    <div class="player" id="player"></div>
+</div>
+
+<script>
+    // Movimiento del jugador
+    const player = document.getElementById("player");
+    let playerPosition = { x: 50, y: 50 };
+
+    // Control de movimiento básico
+    window.addEventListener('keydown', (e) => {
+        switch (e.key) {
+            case 'ArrowUp':
+                playerPosition.y -= 10;
+                break;
+            case 'ArrowDown':
+                playerPosition.y += 10;
+                break;
+            case 'ArrowLeft':
+                playerPosition.x -= 10;
+                break;
+            case 'ArrowRight':
+                playerPosition.x += 10;
+                break;
+        }
+        updatePlayerPosition();
+    });
+
+    function updatePlayerPosition() {
+        player.style.left = playerPosition.x + 'px';
+        player.style.top = playerPosition.y + 'px';
+    }
+
+    // Función de los bots
+    function createBot() {
+        const bot = document.createElement("div");
+        bot.classList.add("bot");
+        bot.style.left = Math.random() * window.innerWidth + "px";
+        bot.style.top = Math.random() * window.innerHeight + "px";
+        document.getElementById("game-container").appendChild(bot);
+
+        // Movimiento aleatorio para el bot
+        moveBot(bot);
+    }
+
+    function moveBot(bot) {
+        setInterval(() => {
+            const randomDirection = Math.floor(Math.random() * 4);
+            const step = 5;
+
+            let currentX = parseInt(bot.style.left);
+            let currentY = parseInt(bot.style.top);
+
+            switch (randomDirection) {
+                case 0: // Mover arriba
+                    bot.style.top = (currentY - step) + "px";
+                    break;
+                case 1: // Mover abajo
+                    bot.style.top = (currentY + step) + "px";
+                    break;
+                case 2: // Mover izquierda
+                    bot.style.left = (currentX - step) + "px";
+                    break;
+                case 3: // Mover derecha
+                    bot.style.left = (currentX + step) + "px";
+                    break;
+            }
+        }, 500);
+    }
+
+    // Crear bots al azar
+    for (let i = 0; i < 5; i++) {
+        createBot();
+    }
+</script>
+
+</body>
+</html>
