@@ -5,31 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify - Los Momos Vol. 2</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+
         body {
             background-color: #121212;
             color: white;
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
         }
         .container {
-            width: 400px;
-            margin: 50px auto;
-            background-color: #181818;
+            width: 90%;
+            max-width: 400px;
+            margin: 20px auto;
+            background: linear-gradient(to bottom, #1e1e1e, #121212);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
         .album-cover {
             width: 100%;
-            height: 200px;
-            background: url('https://i.scdn.co/image/ab67616d0000b273e8e86b25c3207e3e33b04916') no-repeat center;
+            height: 250px;
+            background: url('B544253E-1961-4039-A2B5-B4E1177274E1.jpeg') no-repeat center;
             background-size: cover;
             border-radius: 10px;
         }
-        h2 {
-            margin-top: 15px;
-            font-size: 20px;
+        h1 {
+            font-size: 22px;
+            margin: 15px 0 5px;
+        }
+        .artist {
+            color: #1DB954;
+            font-size: 16px;
+        }
+        .album-meta {
+            font-size: 14px;
+            color: #b3b3b3;
+        }
+        .play-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            background-color: #1DB954;
+            border-radius: 50%;
+            margin: 15px 0;
+            cursor: pointer;
+        }
+        .play-btn span {
+            font-size: 24px;
+            color: white;
         }
         .song-list {
             list-style: none;
@@ -51,12 +76,9 @@
             border-radius: 5px;
             padding: 3px 8px;
         }
-        .play-button {
-            background-color: #1db954;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
+        .play-icon {
+            color: #1DB954;
+            font-size: 20px;
             cursor: pointer;
         }
     </style>
@@ -64,14 +86,17 @@
 <body>
     <div class="container">
         <div class="album-cover"></div>
-        <h2>Los Momos Vol. 2</h2>
+        <h1>Los Momos Vol. 2</h1>
+        <p class="artist">Nicxo YT</p>
+        <p class="album-meta">Álbum • 2025</p>
+        <div class="play-btn"><span>▶</span></div>
         <ul class="song-list">
-            <li><span class="hidden-title">█████████</span> <button class="play-button">▶</button></li>
-            <li><span class="hidden-title">█████████</span> <button class="play-button">▶</button></li>
-            <li>Mi Momo Inolvidable <button class="play-button">▶</button></li>
-            <li><span class="hidden-title">█████████</span> <button class="play-button">▶</button></li>
-            <li><span class="hidden-title">█████████</span> <button class="play-button">▶</button></li>
-            <li><span class="hidden-title">█████████</span> <button class="play-button">▶</button></li>
+            <li><span class="hidden-title">█████████</span> <span class="play-icon">▶</span></li>
+            <li><span class="hidden-title">█████████</span> <span class="play-icon">▶</span></li>
+            <li>Mi Momo Inolvidable <span class="play-icon">▶</span></li>
+            <li><span class="hidden-title">█████████</span> <span class="play-icon">▶</span></li>
+            <li><span class="hidden-title">█████████</span> <span class="play-icon">▶</span></li>
+            <li><span class="hidden-title">█████████</span> <span class="play-icon">▶</span></li>
         </ul>
     </div>
 </body>
