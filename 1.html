@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>pipipupu</title>
+  <style>
+    body {
+      background-color: black;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    .cubo {
+      background: #1c1c1c;
+      border-radius: 20px;
+      padding: 20px;
+      width: 600px;
+      color: white;
+      text-align: center;
+    }
+
+    .cubo h2 {
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+
+    .video-container {
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .video-container video {
+      width: 100%;
+      border-radius: 15px;
+      display: block;
+    }
+
+    .controles {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .video-container:hover .controles {
+      opacity: 1;
+    }
+
+    .controles button {
+      background: rgba(0, 0, 0, 0.7);
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    .controles button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cubo">
+ 
+    <div class="video-container">
+      <video id="e" src="prueba.mp4" muted></video>
+      <div class="controles">
+        <button onclick="e.play()">▶️</button>
+        <button onclick="e.pause()">⏸️</button>
+        <button onclick="e.currentTime = 0; e.pause()">⏹️</button>
+        <button onclick="e.requestFullscreen()">⛶</button>
+      </div>
+    </div>
+<br>
+   <h2>una pajita, bien riquita</h2>
+  </div>
+
+</body>
+</html>
